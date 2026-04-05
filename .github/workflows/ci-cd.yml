@@ -1,0 +1,55 @@
+name: Build & Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-push:
+    # Máy ảo Ubuntu do GitHub cấp, đã có Docker sẵn
+    runs-on: ubuntu-latest
+    env:
+      VITE_API_BASE_URL: http://localhost:8080/api/v1
+
+    steps:
+      # --- Bước 1: clone repo vào runner ---
+      - name: Checkout source
+        uses: actions/checkout@v6.0.2
+
+      # --- Bước 2: bật Docker Buildx (builder hiện đại; build-push-action cần) ---
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.12.0
+
+      # --- Bước 3: docker login registry mặc định (docker.io = Docker Hub) ---
+      - name: Login Docker Hub
+        uses: docker/login-action@v4.0.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # --- Bước 4a: đọc Dockerfile backend, build image, push lên Hub ---
+      - name: Build and push — backend
+        uses: docker/build-push-action@v7.0.0
+        with:
+          context: ./workshift-backend
+          file: ./workshift-backend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/shift-manage-backend:latest
+            ${{ secrets.DOCKER_USERNAME }}/shift-manage-backend:${{ github.sha }}
+
+      - name: Build and push — frontend
+        uses: docker/build-push-action@v7.0.0
+        with:
+          context: ./workshift-frontend
+          file: ./workshift-frontend/Dockerfile
+          push: true
+          build-args: |
+            VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/shift-manage-frontend:latest
+            ${{ secrets.DOCKER_USERNAME }}/shift-manage-frontend:${{ github.sha }}
