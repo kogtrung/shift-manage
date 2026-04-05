@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: #f8f9ff;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+}
+
+/* — Glass & Gradient — */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.primary-gradient {
+  background: linear-gradient(135deg, #0053db 0%, #0048c1 100%);
+}
+
+/* — Input Soft Inset — */
+.soft-inset {
+  border-bottom: 1px solid rgba(71, 125, 187, 0.2);
+  transition: border-color 0.2s ease;
+}
+.soft-inset:focus-within {
+  border-bottom: 2px solid #0053db;
+}
+
+/* — Modal overlay — */
+.modal-overlay {
+  background: rgba(0, 15, 33, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+/* — Custom scrollbar (Lucid style) — */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #dbe1ff;
+  border-radius: 10px;
+}
+
+/* — Sidebar nav link transitions — */
+.sidebar-link {
+  @apply flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm tracking-wide transition-all duration-300;
+}
+.sidebar-link:not(.sidebar-link-active):hover {
+  @apply translate-x-1;
+}
+.sidebar-link-active {
+  @apply bg-surface-container-lowest text-primary font-bold shadow-sm;
+}
