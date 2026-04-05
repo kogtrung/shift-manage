@@ -1,4 +1,4 @@
-### Backend image (Express + TypeScript build -> dist)
+# Backend image (Express + TypeScript build -> dist)
 FROM node:20-alpine AS builder
 
 WORKDIR /app

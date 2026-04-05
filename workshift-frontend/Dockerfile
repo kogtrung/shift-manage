@@ -1,4 +1,4 @@
-### Frontend image (React/Vite build -> Nginx serve dist)
+# Frontend image (React/Vite build -> Nginx serve dist)
 FROM node:20-alpine AS builder
 
 WORKDIR /app
@@ -22,3 +22,5 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 
+# Image nginx mặc định đã có CMD; khai báo rõ để dễ đọc khi chấm bài
+CMD ["nginx", "-g", "daemon off;"]
